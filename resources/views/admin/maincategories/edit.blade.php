@@ -44,7 +44,7 @@
                                 <div class="card-content collapse show">
                                     <div class="card-body">
                                         <form class="form" action="{{route('admin.languages.update',$language -> id)}}" method="POST"
-                                                enctype="multipart/form-data">
+                                              enctype="multipart/form-data">
                                             @csrf
                                             <div class="form-body">
                                                 <h4 class="form-section"><i class="ft-home"></i> بيانات  اللغة </h4>
@@ -54,10 +54,10 @@
                                                         <div class="form-group">
                                                             <label for="projectinput1"> اسم اللغة </label>
                                                             <input type="text"  id="name"
-                                                                    class="form-control"
-                                                                    value="{{$language -> name}}"
-                                                                    placeholder="ادخل اسم اللغة  "
-                                                                    name="name">
+                                                                   class="form-control"
+                                                                   value="{{$language -> name}}"
+                                                                   placeholder="ادخل اسم اللغة  "
+                                                                   name="name">
                                                             @error('name')
                                                             <span class="text-danger">{{$message}}</span>
                                                             @enderror
@@ -68,9 +68,9 @@
                                                         <div class="form-group">
                                                             <label for="projectinput1"> أختصار اللغة </label>
                                                             <input type="text" value="{{$language -> abbr}}" id="name"
-                                                                    class="form-control"
-                                                                    placeholder="ادخل أختصار اللغة  "
-                                                                    name="abbr">
+                                                                   class="form-control"
+                                                                   placeholder="ادخل أختصار اللغة  "
+                                                                   name="abbr">
                                                             @error('abbr')
                                                             <span class="text-danger">{{$message}} </span>
                                                             @enderror
@@ -103,11 +103,13 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group mt-1">
                                                             <input type="checkbox"  value="1" name="active"
-                                                                    id="switcheryColor4"
-                                                                    class="switchery" data-color="success"
-                                                                    @if($language -> active  == 1 ) checked @endif
+                                                                   id="switcheryColor4"
+                                                                   class="switchery" data-color="success"
+
+                                                                  @if($language -> active  == 1 ) checked @endif
                                                             />
-                                                            <label for="switcheryColor4" class="card-title ml-1">الحالة </label>
+                                                            <label for="switcheryColor4"
+                                                                   class="card-title ml-1">الحالة </label>
 
                                                             @error('active')
                                                             <span class="text-danger">{{$message}}</span>
