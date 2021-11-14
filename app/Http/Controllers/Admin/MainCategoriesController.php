@@ -48,7 +48,6 @@ class MainCategoriesController extends Controller
 
             $filePath = '';
             if($request->has('photo')) { //#17
-
                 $filePath = uploadImage('maincategories' , $request->photo);
 
             }
@@ -121,7 +120,7 @@ class MainCategoriesController extends Controller
     public function update($mainCat_id, MainCategoryRequest $request)
     {
 
-
+        try{
         $main_category = MainCategory::find($mainCat_id);
 
         if(!$main_category)
@@ -130,10 +129,33 @@ class MainCategoriesController extends Controller
         // if main_category is exist in database we will update database
 
         $category = array_values($request -> category)[0];  // #20
+
+        if(!$request ->has('category.0.active'))  // #21
+                $request ->request->add(['active'=>0]);
+        else
+                $request ->request->add(['active'=>1]);
+
+        // update name & active
         MainCategory::where('id' , $mainCat_id)->update([
-            'name' => $category['name']
+            'name'   =>  $category['name'],
+            'active' =>  $request->active,
         ]);
 
+
+            // save image
+        $filePath = $main_category -> photo;   //#21
+        if($request->has('photo')) {
+            $filePath = uploadImage('maincategories' , $request->photo);
+            MainCategory::where('id' , $mainCat_id)->update([
+                'photo'  =>  $filePath,
+            ]);
+        }
+
+
         return redirect()->route('admin.maincategories')->with(['success'  => 'تم التحديث بنجاح']);
+
+    }catch(\Exception $ex) {
+        return redirect()->route('admin.maincategories')->with(['error'  => 'حدث خطأ ما برجاء المحاوله لاحقا  ']);
+    }
     }
 }
