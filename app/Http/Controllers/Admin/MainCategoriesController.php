@@ -29,6 +29,9 @@ class MainCategoriesController extends Controller
 
     }
 
+
+        ////////   ...Store...   ////////
+
     public function store(MainCategoryRequest $request)
     {
         try{
@@ -44,9 +47,9 @@ class MainCategoriesController extends Controller
             $default_category = array_values($filter ->all()) [0];
 
             $filePath = '';
-            if($request -> has('photo')) { //#17
+            if($request->has('photo')) { //#17
 
-                $filePath = uploadImage('maincategories' , $request ->photo);
+                $filePath = uploadImage('maincategories' , $request->photo);
 
             }
 
@@ -61,11 +64,11 @@ class MainCategoriesController extends Controller
                     'photo' => $filePath,
                 ]);
 
-                $categories = $main_categories -> filter(function($value , $key) { //di hatgib kol el categories eli mesh arabic
+                $categories = $main_categories->filter(function($value , $key) { //di hatgib kol el categories eli mesh arabic
                     return $value['abbr'] !== get_default_lang();
                 });
 
-                if (isset($categories) && $categories -> count())
+                if (isset($categories) && $categories->count())
                 {
                     $categories_arr = [];
                     foreach($categories as $category )
@@ -73,6 +76,9 @@ class MainCategoriesController extends Controller
                         $categories_arr[] = [
                             'translation_lang' => $category['abbr'],
                             'translation_of' => $default_category_id,
+                            'name' => $category['name'],
+                            'slug' => $category['name'],
+                            'photo' => $filePath
                         ];
                     }
                     MainCategory::insert($categories_arr);
@@ -86,9 +92,48 @@ class MainCategoriesController extends Controller
 
             DB::rollback();
 
-            return redirect()->route('admin.maincategories')->with(['errors'  => 'حدث خطأ ما برجاء المحاوله لاحقا  ']);
+            return redirect()->route('admin.maincategories')->with(['error'  => 'حدث خطأ ما برجاء المحاوله لاحقا  ']);
 
         }
 
+    }
+
+
+
+    ///////  ...Edit... ////////
+
+    public function edit ($mainCat_id)
+    {
+
+        $mainCategory = MainCategory::selection()->find($mainCat_id);  //#20
+
+        if (!$mainCategory)
+            return redirect()->route('admin.maincategories')->with(['error'  => ' هذا القسم غير موجود']);
+
+
+        return view('admin.maincategories.edit' , compact('mainCategory'));
+    }
+
+
+
+    ////////  ...Update...  ///////////
+
+    public function update($mainCat_id, MainCategoryRequest $request)
+    {
+
+
+        $main_category = MainCategory::find($mainCat_id);
+
+        if(!$main_category)
+        return redirect()->route('admin.maincategories')->with(['error'  => ' هذا القسم غير موجود']);
+
+        // if main_category is exist in database we will update database
+
+        $category = array_values($request -> category)[0];  // #20
+        MainCategory::where('id' , $mainCat_id)->update([
+            'name' => $category['name']
+        ]);
+
+        return redirect()->route('admin.maincategories')->with(['success'  => 'تم التحديث بنجاح']);
     }
 }
