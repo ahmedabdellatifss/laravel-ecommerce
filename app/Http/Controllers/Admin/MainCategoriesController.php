@@ -104,7 +104,7 @@ class MainCategoriesController extends Controller
     public function edit ($mainCat_id)
     {
 
-        $mainCategory = MainCategory::selection()->find($mainCat_id);  //#20
+        $mainCategory = MainCategory::with('categories')->selection()->find($mainCat_id);  //#20
 
         if (!$mainCategory)
             return redirect()->route('admin.maincategories')->with(['error'  => ' هذا القسم غير موجود']);

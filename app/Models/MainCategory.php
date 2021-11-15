@@ -21,7 +21,7 @@ class MainCategory extends Model
     }
 
     public function scopeSelection($query) {
-        return $query->select('id' , 'translation_lang' , 'name' , 'slug' , 'photo' , 'active');
+        return $query->select('id' , 'translation_lang' , 'name' , 'slug' , 'photo' , 'active' , 'translation_of');
 
     }
 
@@ -33,6 +33,10 @@ class MainCategory extends Model
 
     public function getActive () {
         return $this->active == 1 ? 'مفعل' : 'غير مفعل';
+    }
+
+    public function categories(){
+        return $this->hasMany( self::class , 'translation_of');   //  I Use (self::class) when I make relation in the same model
     }
 
 }
