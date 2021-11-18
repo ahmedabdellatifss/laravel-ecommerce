@@ -103,7 +103,7 @@ class MainCategoriesController extends Controller
 
     public function edit ($mainCat_id)
     {
-
+            //  Get Specific Categories and its translations
         $mainCategory = MainCategory::with('categories')->selection()->find($mainCat_id);  //#20
 
         if (!$mainCategory)

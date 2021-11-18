@@ -39,4 +39,8 @@ class MainCategory extends Model
         return $this->hasMany( self::class , 'translation_of');   //  I Use (self::class) when I make relation in the same model
     }
 
+    public function vendors() {
+        return $this -> hasMany('App/Models/Vendors'  ,  'category_id'  , 'id');
+    }
+
 }
