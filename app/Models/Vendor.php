@@ -27,4 +27,12 @@ class Vendor extends Model
         return $query ->select('id' , 'category_id' , 'logo' , 'mobile');
     }
 
+    public function category() {
+        return $this -> belongsTo('App/Models/MainCategory'  ,  'category_id'  , 'id');
+    }
+
+    public function getActive () {
+        return $this->active == 1 ? 'مفعل' : 'غير مفعل';
+    }
+
 }
