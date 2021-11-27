@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('content')
-
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-header row">
@@ -44,8 +43,8 @@
                                 <div class="card-content collapse show">
                                     <div class="card-body">
                                     <form class="form" action="{{route('admin.vendors.store')}}" method="POST"enctype="multipart/form-data">
-                                        <input type="hidden"  value="" id="latitude" name="latitude">
-                                        <input type="hidden" value="" id="longitude"  name="longitude">
+                                        <input type="hidden"  value="2313" id="latitude" name="latitude">
+                                        <input type="hidden" value="12312" id="longitude"  name="longitude">
                                         @csrf
                                         <div class="form-group">
                                             <label> لوجو التجار </label>
@@ -146,35 +145,34 @@
                                                         <input type="text" id="pac-input"
                                                                 class="form-control"
                                                                 placeholder="  " name="address">
-
                                                         @error("address")
                                                         <span class="text-danger"> {{$message}}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
-
                                             </di>
+
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group mt-1">
-                                                        <input type="checkbox" value="1"
+                                                    <div class="col-md-6">
+                                                        <div class="form-group mt-1">
+                                                            <input type="checkbox" value="1"
                                                                 name="active"
                                                                 id="switcheryColor4"
                                                                 class="switchery" data-color="success"
                                                                 checked/>
-                                                        <label for="switcheryColor4"
+                                                            <label for="switcheryColor4"
                                                                 class="card-title ml-1">الحالة </label>
 
-                                                        @error("active")
-                                                        <span class="text-danger"> </span>
-                                                        @enderror
+                                                            @error("active")
+                                                            <span class="text-danger"> </span>
+                                                            @enderror
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
                                         </div>
 
-
+                                            <!-- this div to show google map google ask you to create div with id=map -->
                                         <div id="map" style="height: 500px;width: 1000px;"></div>
 
                                         <div class="form-actions">
@@ -411,5 +409,5 @@
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKZAuxH9xTzD2DLY2nKSPKrgRi2_y0ejs&libraries=places&callback=initAutocomplete&language=ar&region=EG
-         async defer"></script>
+    async defer"></script>
     @stop
