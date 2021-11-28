@@ -9,6 +9,7 @@ use App\Http\Requests\VendorRequest;
 
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\VendorCreated;
+use DB;
 
 class VendorsController extends Controller
 {
@@ -83,10 +84,84 @@ class VendorsController extends Controller
 
 
     }
-    public function update()
+    public function update($id , VendorRequest $request)
     {
+        try {
 
+            $vendor = Vendor::Selection()->find($id);
+            if (!$vendor)
+                return redirect()->route('admin.vendors')->with(['error' => 'هذا المتجر غير موجود او ربما يكون محذوفا ']);
+
+
+            DB::beginTransaction();
+            //photo
+            if ($request->has('logo') ) {
+                 $filePath = uploadImage('vendors', $request->logo);
+                Vendor::where('id', $id)
+                    ->update([
+                        'logo' => $filePath,
+                    ]);
+            }
+
+
+            if (!$request->has('active'))
+                $request->request->add(['active' => 0]);
+            else
+                $request->request->add(['active' => 1]);
+
+             $data = $request->except('_token', 'id', 'logo', 'password');
+
+
+            if ($request->has('password') && !is_null($request->  password)) {
+
+                $data['password'] = $request->password;
+            }
+
+            Vendor::where('id', $id)
+                ->update(
+                    $data
+                );
+
+            DB::commit();
+            return redirect()->route('admin.vendors')->with(['success' => 'تم التحديث بنجاح']);
+        } catch (\Exception $exception) {
+            return $exception;
+            DB::rollback();
+            return redirect()->route('admin.vendors')->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
+        }
     }
+        // try{
+        //     $vendor = Vendor::Selection()->find($id);
+        //         if(!$vendor)
+        //             return redirect()->route('admin.vendors')->with(['errors'  => 'هذا المتجر غير موجود']);
+
+        //     DB::beginTransaction();
+        //         // update photo
+        //         if($request->has('logo')) {
+        //             $filePath = uploadImage('vendors' , $request->logo);
+        //             Vendor::where('id' , $id)->update([
+        //                 'logo'  =>  $filePath,
+        //             ]);
+        //         }
+
+        //         // update password
+        //         $data = $request->except('_token' , 'id' , 'photo', 'password'); //#35
+        //         if($request->has('password')) {
+        //             $data['password'] = $request->password;
+        //         }
+
+        //         Vendor::where('id' , $id)->update([$data]);
+
+        //     DB::commmit();
+
+        //     return redirect()->route('admin.vendors')->with(['success'  => 'تم التحديث بنجاح']);
+
+        // }catch(\Exception $exception ){
+        //     DB::rollback();
+        //     return redirect()->route('admin.vendors')->with(['errors'  => 'هناك خطأ ما يرجا المحاوله مرة ثانيه']);
+        // }
+
+   // }
 
 
     public function changeStatus()

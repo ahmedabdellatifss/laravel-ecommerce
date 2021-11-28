@@ -121,41 +121,67 @@ class MainCategoriesController extends Controller
     {
 
         try{
-        $main_category = MainCategory::find($mainCat_id);
+            $main_category = MainCategory::find($mainCat_id);
 
-        if(!$main_category)
-        return redirect()->route('admin.maincategories')->with(['error'  => ' هذا القسم غير موجود']);
+            if(!$main_category)
+            return redirect()->route('admin.maincategories')->with(['error'  => ' هذا القسم غير موجود']);
 
-        // if main_category is exist in database we will update database
+            // if main_category is exist in database we will update database
 
-        $category = array_values($request -> category)[0];  // #20
+            $category = array_values($request -> category)[0];  // #20
 
-        if(!$request ->has('category.0.active'))  // #21
-                $request ->request->add(['active'=>0]);
-        else
-                $request ->request->add(['active'=>1]);
+            if(!$request ->has('category.0.active'))  // #21
+                    $request ->request->add(['active'=>0]);
+            else
+                    $request ->request->add(['active'=>1]);
 
-        // update name & active
-        MainCategory::where('id' , $mainCat_id)->update([
-            'name'   =>  $category['name'],
-            'active' =>  $request->active,
-        ]);
-
-
-            // save image
-        $filePath = $main_category -> photo;   //#21
-        if($request->has('photo')) {
-            $filePath = uploadImage('maincategories' , $request->photo);
+            // update name & active
             MainCategory::where('id' , $mainCat_id)->update([
-                'photo'  =>  $filePath,
+                'name'   =>  $category['name'],
+                'active' =>  $request->active,
             ]);
+
+
+                // save image
+            $filePath = $main_category -> photo;   //#21
+            if($request->has('photo')) {
+                $filePath = uploadImage('maincategories' , $request->photo);
+                MainCategory::where('id' , $mainCat_id)->update([
+                    'photo'  =>  $filePath,
+                ]);
+            }
+
+            return redirect()->route('admin.maincategories')->with(['success'  => 'تم التحديث بنجاح']);
+
+        }catch(\Exception $ex) {
+            return redirect()->route('admin.maincategories')->with(['error'  => 'حدث خطأ ما برجاء المحاوله لاحقا  ']);
         }
 
-
-        return redirect()->route('admin.maincategories')->with(['success'  => 'تم التحديث بنجاح']);
-
-    }catch(\Exception $ex) {
-        return redirect()->route('admin.maincategories')->with(['error'  => 'حدث خطأ ما برجاء المحاوله لاحقا  ']);
     }
+
+    public function destroy($id)
+    {
+
+        try{
+
+            $maincategory = MainCategory::find($id);
+            if (!$maincategory)
+                return redirect()->route('admin.maincategories')->with(['error'  => ' هذا القسم غير موجود']);
+
+            $vendors = $maincategory->vendors(); //#36
+            if(isset($vendors) && $vendors->count() > 0 ){
+                return redirect()->route('admin.maincategories')->with(['error'  => 'لايمكن حذف هذا القسم ']);
+            }
+
+            $maincategory->delete();
+            return redirect()->route('admin.maincategories')->with(['success'  => 'تم الحذف بنجاح']);
+
+        }catch(\Exception $ex){
+            return redirect()->route('admin.maincategories')->with(['error'  => 'حدث خطأ ما برجاء المحاوله لاحقا  ']);
+        }
     }
+
+
+
 }
+

@@ -44,11 +44,11 @@
                                 <div class="card-content collapse show">
                                     <div class="card-body">
                                         <form class="form" action="{{route('admin.vendors.update',$vendor -> id)}}"
-                                              method="POST"
-                                              enctype="multipart/form-data">
+                                                method="POST"
+                                                enctype="multipart/form-data">
                                             @csrf
 
-                                             <input type="hidden" name="id" value="{{$vendor -> id}}">
+                                            <input type="hidden" name="id" value="{{$vendor -> id}}">
 
                                             <input type="hidden"  value="{{$vendor -> latitude}}" id="latitude" name="latitude">
                                             <input type="hidden" value="{{$vendor -> longitude}}" id="longitude"  name="longitude">
@@ -120,9 +120,9 @@
                                                         <div class="form-group">
                                                             <label for="projectinput1"> رقم الهاتف </label>
                                                             <input type="text" id="mobile"
-                                                                   class="form-control"
-                                                                   placeholder="  " name="mobile"
-                                                              value="{{$vendor -> mobile}}">
+                                                                    class="form-control"
+                                                                    placeholder="  " name="mobile"
+                                                                    value="{{$vendor -> mobile}}">
 
                                                             @error("mobile")
                                                             <span class="text-danger"> {{$message}}</span>
@@ -133,9 +133,9 @@
                                                         <div class="form-group">
                                                             <label for="projectinput1"> ألبريد الالكتروني </label>
                                                             <input type="text" id="email"
-                                                                   class="form-control"
-                                                                   placeholder="  " name="email"
-                                                                   value="{{$vendor -> email}}">
+                                                                class="form-control"
+                                                                placeholder="  " name="email"
+                                                                value="{{$vendor -> email}}">
 
                                                             @error("email")
                                                             <span class="text-danger"> {{$message}}</span>
