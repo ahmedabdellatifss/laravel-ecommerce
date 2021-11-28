@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 
 use DB;
+use Illuminate\Support\Str;
 
 
 
@@ -173,7 +174,14 @@ class MainCategoriesController extends Controller
                 return redirect()->route('admin.maincategories')->with(['error'  => 'لايمكن حذف هذا القسم ']);
             }
 
+            // remove image from folder #37
+            $image = Str::after($maincategory->photo , 'assets/');
+                $image = base_path('assets/'.$image);
+                unlink($image); //delete from folder
+
+            // delete image from database
             $maincategory->delete();
+
             return redirect()->route('admin.maincategories')->with(['success'  => 'تم الحذف بنجاح']);
 
         }catch(\Exception $ex){
