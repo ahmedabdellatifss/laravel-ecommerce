@@ -179,6 +179,8 @@ class MainCategoriesController extends Controller
             $image = base_path('assets/'.$image);
             unlink($image); //delete from folder
 
+            // delete translation #41
+            $maincategory->categories()->delete();
 
             // delete image from database
             $maincategory->delete();
@@ -204,6 +206,7 @@ class MainCategoriesController extends Controller
             $status = $maincategory->active == 0 ? 1 : 0 ;
 
             $maincategory->update(['active' =>$status]);
+
             return redirect()->route('admin.maincategories')->with(['success'  => 'تم التفعيل بنجاح ']);
 
         }catch(\Exception $ex){
