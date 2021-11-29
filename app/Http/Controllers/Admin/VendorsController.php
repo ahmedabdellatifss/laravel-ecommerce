@@ -10,6 +10,7 @@ use App\Http\Requests\VendorRequest;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\VendorCreated;
 use DB;
+use Illuminate\Support\Str;
 
 class VendorsController extends Controller
 {
@@ -96,7 +97,7 @@ class VendorsController extends Controller
             DB::beginTransaction();
             //photo
             if ($request->has('logo') ) {
-                 $filePath = uploadImage('vendors', $request->logo);
+                $filePath = uploadImage('vendors', $request->logo);
                 Vendor::where('id', $id)
                     ->update([
                         'logo' => $filePath,
@@ -109,7 +110,7 @@ class VendorsController extends Controller
             else
                 $request->request->add(['active' => 1]);
 
-             $data = $request->except('_token', 'id', 'logo', 'password');
+            $data = $request->except('_token', 'id', 'logo', 'password');
 
 
             if ($request->has('password') && !is_null($request->  password)) {
@@ -130,42 +131,55 @@ class VendorsController extends Controller
             return redirect()->route('admin.vendors')->with(['error' => 'حدث خطا ما برجاء المحاوله لاحقا']);
         }
     }
-        // try{
-        //     $vendor = Vendor::Selection()->find($id);
-        //         if(!$vendor)
-        //             return redirect()->route('admin.vendors')->with(['errors'  => 'هذا المتجر غير موجود']);
-
-        //     DB::beginTransaction();
-        //         // update photo
-        //         if($request->has('logo')) {
-        //             $filePath = uploadImage('vendors' , $request->logo);
-        //             Vendor::where('id' , $id)->update([
-        //                 'logo'  =>  $filePath,
-        //             ]);
-        //         }
-
-        //         // update password
-        //         $data = $request->except('_token' , 'id' , 'photo', 'password'); //#35
-        //         if($request->has('password')) {
-        //             $data['password'] = $request->password;
-        //         }
-
-        //         Vendor::where('id' , $id)->update([$data]);
-
-        //     DB::commmit();
-
-        //     return redirect()->route('admin.vendors')->with(['success'  => 'تم التحديث بنجاح']);
-
-        // }catch(\Exception $exception ){
-        //     DB::rollback();
-        //     return redirect()->route('admin.vendors')->with(['errors'  => 'هناك خطأ ما يرجا المحاوله مرة ثانيه']);
-        // }
-
-   // }
 
 
-    public function changeStatus()
+    public function destroy($id)
     {
+
+        try{
+
+            $vendor = Vendor::find($id);
+            if (!$vendor)
+                return redirect()->route('admin.vendors')->with(['error'  => ' هذا المتجر غير موجود']);
+
+
+            // remove image from folder #37
+            $image = Str::after($vendor->logo , 'assets/');
+            $image = base_path('assets/'.$image);
+            unlink($image); //delete from folder
+
+            // delete image from database
+            $vendor->delete();
+
+            return redirect()->route('admin.vendors')->with(['success'  => 'تم الحذف المتجر بنجاح']);
+
+        }catch(\Exception $ex){
+
+            return redirect()->route('admin.vendors')->with(['error'  => 'حدث خطأ ما برجاء المحاوله لاحقا  ']);
+
+        }
+    }
+
+
+    public function changeStatus($id) //#38
+    {
+
+        try{
+            $vendor = Vendor::find($id);
+            if (!$vendor)
+                return redirect()->route('admin.vendors')->with(['error'  => ' هذا المتجر غير موجود']);
+
+            $status = $vendor->active == 0 ? 1 : 0 ;
+
+            $vendor->update(['active' =>$status]);
+
+            return redirect()->route('admin.vendors')->with(['success'  => 'تم التفعيل بنجاح ']);
+
+        }catch(\Exception $ex){
+
+            return redirect()->route('admin.vendors')->with(['error'  => 'حدث خطأ ما برجاء المحاوله لاحقا  ']);
+
+        }
 
     }
 
