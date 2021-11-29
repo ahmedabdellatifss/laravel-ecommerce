@@ -65,7 +65,13 @@
                                                     <div class="btn-group" role="group" aria-label="Basic example">
                                                         <a href="{{route('admin.maincategories.edit' , $category->id)}}" class="btn btn-outline-primary btn-min-width box-shadow-3 mr-1 mb-1">تعديل</a>
                                                         <a href="{{route('admin.maincategories.delete' , $category->id)}}" class="btn btn-outline-danger btn-min-width box-shadow-3 mr-1 mb-1">حذف</a>
-                                                        <a href="" class="btn btn-outline-warning btn-min-width box-shadow-3 mr-1 mb-1"> تفعيل</a>
+                                                        <a href="{{route('admin.maincategories.status' , $category->id)}}" class="btn btn-outline-warning btn-min-width box-shadow-3 mr-1 mb-1">
+                                                            @if($category->active == 0)
+                                                                تفعيل
+                                                            @else
+                                                                الغاء التفعيل
+                                                            @endif
+                                                        </a>
                                                     </div>
                                                 </td>
                                             </tr>

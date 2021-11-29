@@ -176,8 +176,9 @@ class MainCategoriesController extends Controller
 
             // remove image from folder #37
             $image = Str::after($maincategory->photo , 'assets/');
-                $image = base_path('assets/'.$image);
-                unlink($image); //delete from folder
+            $image = base_path('assets/'.$image);
+            unlink($image); //delete from folder
+
 
             // delete image from database
             $maincategory->delete();
@@ -185,8 +186,32 @@ class MainCategoriesController extends Controller
             return redirect()->route('admin.maincategories')->with(['success'  => 'تم الحذف بنجاح']);
 
         }catch(\Exception $ex){
+
             return redirect()->route('admin.maincategories')->with(['error'  => 'حدث خطأ ما برجاء المحاوله لاحقا  ']);
+
         }
+    }
+
+
+    public function changeStatus($id) //#38
+    {
+
+        try{
+            $maincategory = MainCategory::find($id);
+            if (!$maincategory)
+                return redirect()->route('admin.maincategories')->with(['error'  => ' هذا القسم غير موجود']);
+
+            $status = $maincategory->active == 0 ? 1 : 0 ;
+
+            $maincategory->update(['active' =>$status]);
+            return redirect()->route('admin.maincategories')->with(['success'  => 'تم التفعيل بنجاح ']);
+
+        }catch(\Exception $ex){
+
+            return redirect()->route('admin.maincategories')->with(['error'  => 'حدث خطأ ما برجاء المحاوله لاحقا  ']);
+
+        }
+
     }
 
 

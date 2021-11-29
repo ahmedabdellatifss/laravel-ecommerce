@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Observers\MainCategoryObserver;
 
 class MainCategory extends Model
 {
@@ -14,6 +15,11 @@ class MainCategory extends Model
         'translation_lang','translation_of','name','slug' , 'photo' , 'active' ,'created_at', 'updated_at'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+        MainCategory::observe(MainCategoryObserver::class);
+    }
     public function scopeActive($query) {  // #09
 
         return $query-> where('active',1);
