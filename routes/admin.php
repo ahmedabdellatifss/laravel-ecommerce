@@ -54,6 +54,28 @@ Route::group([ 'namespace'=>'Admin' , 'middleware' =>'auth:admin'] , function ()
 
     ##################### End Main Categories Route ################################
 
+
+    ##################### Begin Sub Categories Route ################################
+
+    Route::group(['prefix'=>'sub_categories'] , function(){
+
+        Route::get('/' , 'SubCategoriesController@index')->name('admin.subcategories');
+        Route::get('create' , 'SubCategoriesController@create')->name('admin.subcategories.create');
+        Route::post('store' , 'SubCategoriesController@store')->name('admin.subcategories.store');
+
+        Route::get('edit/{id}' , 'SubCategoriesController@edit')->name('admin.subcategories.edit');
+        Route::post('update/{id}' , 'SubCategoriesController@update')->name('admin.subcategories.update');
+
+        Route::get('delete/{id}' , 'SubCategoriesController@destroy')->name('admin.subcategories.delete');
+
+        Route::get('changeStatus/{id}' , 'SubCategoriesController@changeStatus')->name('admin.subcategories.status');
+        });
+
+
+    ##################### End Sub Categories Route ################################
+
+
+
     ##################### Begin Main Vendors Route ################################
 
     Route::group(['prefix'=>'vendors'] , function(){
@@ -88,4 +110,18 @@ Route::group([ 'namespace'=>'Admin' , 'middleware' =>'guest:admin'] , function (
 
 Route::get('test-helper' , function () {
     return show_name();
+});
+
+
+Route::get('subcategory' , function () {
+                                            // #54
+    $maincategory = \App\Models\MainCategory::find(5);
+
+    return $maincategory->subCategories;
+});
+Route::get('maincategory' , function () {
+                                            // #54
+    $subcategory = \App\Models\SubCategory::find(1);
+
+    return $subcategory->maincategory;
 });

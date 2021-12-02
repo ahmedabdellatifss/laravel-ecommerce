@@ -161,7 +161,7 @@
                                                                 class="switchery" data-color="success"
                                                                 checked/>
                                                             <label for="switcheryColor4"
-                                                                class="card-title ml-1">الحالة </label>
+                                                                   class="card-title ml-1">الحالة </label>
 
                                                             @error("active")
                                                             <span class="text-danger"> </span>

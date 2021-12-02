@@ -40,7 +40,8 @@
         "classmap": [
             "database/seeds",
             "database/factories"
-        ],"files" :[
+        ],
+        "files" :[
             "App/Helpers/General.php"
         ]
     },

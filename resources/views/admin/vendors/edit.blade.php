@@ -83,9 +83,9 @@
                                                         <div class="form-group">
                                                             <label for="projectinput1"> الاسم </label>
                                                             <input type="text" value="{{$vendor -> name}}" id="name"
-                                                                   class="form-control"
-                                                                   placeholder="  "
-                                                                   name="name">
+                                                                    class="form-control"
+                                                                    placeholder="  "
+                                                                    name="name">
                                                             @error("name")
                                                             <span class="text-danger">{{$message}}</span>
                                                             @enderror
@@ -152,9 +152,8 @@
                                                         <div class="form-group">
                                                             <label for="projectinput1">كلمة المرور  </label>
                                                             <input type="password" id="password"
-                                                                   class="form-control"
-                                                                   placeholder="  " name="password">
-
+                                                                class="form-control"
+                                                                placeholder="  " name="password">
                                                             @error("password")
                                                             <span class="text-danger"> {{$message}}</span>
                                                             @enderror
@@ -169,11 +168,10 @@
                                                         <div class="form-group">
                                                             <label for="projectinput1"> العنوان  </label>
                                                             <input type="text" id="pac-input"
-                                                                   class="form-control"
-                                                                   placeholder="  " name="address"
-                                                                   value="{{$vendor -> address}}"
+                                                                    class="form-control"
+                                                                    placeholder="  " name="address"
+                                                                    value="{{$vendor -> address}}"
                                                             >
-
                                                             @error("address")
                                                             <span class="text-danger"> {{$message}}</span>
                                                             @enderror
@@ -185,22 +183,19 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group mt-1">
                                                             <input type="checkbox" value="1"
-                                                                   name="active"
-                                                                   id="switcheryColor4"
-                                                                   class="switchery" data-color="success"
-                                                                   @if($vendor -> active == 1)checked @endif/>
+                                                                    name="active"
+                                                                    id="switcheryColor4"
+                                                                    class="switchery" data-color="success"
+                                                                    @if($vendor -> active == 1)checked @endif/>
                                                             <label for="switcheryColor4"
-                                                                   class="card-title ml-1">الحالة </label>
-
+                                                                    class="card-title ml-1">الحالة </label>
                                                             @error("active")
                                                             <span class="text-danger"> </span>
                                                             @enderror
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
-
 
                                             <div id="map" style="height: 500px;width: 1000px;"></div>
 
@@ -230,11 +225,14 @@
 
 @section('script')
 
-    <script>
+<script>
 
         $("#pac-input").focusin(function() {
             $(this).val('');
         });
+
+        $('#latitude').val('');
+        $('#longitude').val('');
 
 
         // This example adds a search box to a map, using the Google Place Autocomplete
@@ -247,7 +245,7 @@
 
         function initAutocomplete() {
 
-            var pos = {lat:   {{ $vendor->latitude }} ,  lng: {{ $vendor->longitude }} };
+            var pos = {lat:{{ $vendor->latitude}} , lng:{{ $vendor->longitude }} };
 
             map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 15,
@@ -419,11 +417,9 @@
             var trainindIdArray = newString2.split(',');
             var lat = trainindIdArray[0];
             var Lng  = trainindIdArray[1];
-
             $("#latitude").val(lat);
             $("#longitude").val(Lng);
         }
-
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKZAuxH9xTzD2DLY2nKSPKrgRi2_y0ejs&libraries=places&callback=initAutocomplete&language=ar&region=EG
          async defer"></script>

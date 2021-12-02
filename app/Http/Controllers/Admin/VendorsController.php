@@ -55,7 +55,7 @@ class VendorsController extends Controller
                             'latitude' => $request->latitude,
                             'longitude' => $request->longitude,
                 ]);
-            //Notification::send($vendor, new VendorCreated($vendor));  //#32
+        // Notification::send($vendor, new VendorCreated($vendor));  //#32
                 return redirect()->route('admin.vendors')->with(['success'  => 'تم الحفظ بنجاح']);
 
             }catch (\Exception $ex) {
